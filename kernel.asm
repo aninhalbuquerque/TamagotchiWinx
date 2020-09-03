@@ -7,8 +7,6 @@ data:
     instrucoes db 'instrucoes', 0
     creditos db 'creditos', 0
     
-
-
 start:
     xor ax, ax
     mov ds, ax
@@ -18,6 +16,14 @@ start:
     jmp fim
     
 mostraMenu:
+
+    ;isso aqui nao tinha, ai coloquei
+	mov ah, 0xe
+	mov al, 175
+	mov bh, 0
+	mov bl, 3 ;aqui a cor da letra
+	int 10h
+
     mov si, titulo
     call printString
     call pularLinha
@@ -38,15 +44,23 @@ modoVideo:
 	mov bl, 5
 	int 10h
     ret
+    
 modoVideoCor:
+    
+    ;mov al, 13h
     mov ah, 0
-    mov al, 13h
+    mov al, 12h
     int 10h ; modo video
     
-    mov ah, 0bh
-    mov bh, 01h
-    mov bl, 12   
-    int 10h
+    ;essa parte aqui eu troquei, o que tava antes ficou comentado embaixo
+    mov ah, 0xb  
+    mov bh, 0     
+	mov bl, 5   ;aqui a gente seta a cor do bg
+	int 10h
+    ;mov ah, 0bh
+    ;mov bh, 01h
+    ;mov bl, 3 
+    ;int 10h
     ret
 
 lerChar:
