@@ -17,12 +17,7 @@ start:
     
 mostraMenu:
 
-    ;isso aqui nao tinha, ai coloquei
-	mov ah, 0xe
-	mov al, 175
-	mov bh, 0
-	mov bl, 3 ;aqui a cor da letra
-	int 10h
+    mov bl, 1 ;cor do texto
 
     mov si, titulo
     call printString
@@ -37,7 +32,7 @@ mostraMenu:
     call printString
     call pularLinha
     ret
-    
+
 modoVideo:
     mov AX, 0011h
     mov bh, 0
@@ -47,30 +42,25 @@ modoVideo:
     
 modoVideoCor:
     
-    ;mov al, 13h
-    mov ah, 0
-    mov al, 12h
-    int 10h ; modo video
-    
-    ;essa parte aqui eu troquei, o que tava antes ficou comentado embaixo
-    mov ah, 0xb  
-    mov bh, 0     
-	mov bl, 5   ;aqui a gente seta a cor do bg
-	int 10h
-    ;mov ah, 0bh
-    ;mov bh, 01h
-    ;mov bl, 3 
-    ;int 10h
+    mov ah, 0h 
+    mov al, 0xd ;modo VGA
+    int 10h
+    mov ah, 0bh 
+    mov bh, 0 
+    mov bl, 0xd ;cor
+    int 10h
     ret
 
 lerChar:
     mov ah, 0x00
     int 16h
     ret
+
 printChar:   
     mov ah, 0xe
     int 10h
     ret
+
 printString:
     lodsb       ;passa da posição de di da string pra al
     cmp al, 0
@@ -79,6 +69,7 @@ printString:
     jmp printString
     .fin:
         ret
+        
 lerString:
     mov al, 0
     .for:
