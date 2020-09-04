@@ -2,8 +2,37 @@ org 0x7e00
 jmp 0x0000:start
 
 data:
-    
-	tamagotchiMorto db  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 15, 15, 15, 15, 15,  0,  0,  0,  0,  0,  0,  0
+	titulo db 'TAMAGOTCHI', 0
+    jogar db 'jogar (1)', 0
+    instrucoes db 'instrucoes (2)', 0
+    creditos db 'creditos (3)', 0
+    gameOver db 'GAME OVER X_X', 0
+    tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00, 00
+	db  00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00
+	db  00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00 
+	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00
+	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+	db  00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+	db  00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+    db  00, 00, 00, 15, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 00, 15, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 15, 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 00
+    db  15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15
+    db  15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15
+    db  15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15
+    db  00, 00, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 15, 00
+    db  00, 00, 00, 00, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    tamagotchiMorto db  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 15, 15, 15, 15, 15,  0,  0,  0,  0,  0,  0,  0
 	db  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 15, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0,  0,  0
 	db  0,  0,  0,  0,  0,  0, 15, 15,  4,  4,  4,  4, 13, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0,  0 
 	db  0,  0,  0,  0,  0, 15, 13,  4,  4, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0,  0
@@ -28,17 +57,13 @@ data:
     db  0,  0,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0
     db  0,  0,  0,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0,  0
     db  0,  0,  0,  0,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0,  0,  0,  0
-
-	titulo db 'tamagotchi', 0
-    jogar db 'jogar', 0
-    instrucoes db 'instrucoes', 0
-    creditos db 'creditos', 0
-    gameOver db 'GAME OVER X_X', 0
-	
-	; tamanho do corpo do tamagotchi x_x
+    ; tamanho do corpo do tamagotchi x_x
 	tamagotchiW dw 25
 	tamagotchiH dw 25
-	; posicao do tamagotchi falecido na tela
+	; posicao do tamagotchi vivo na tela
+	tamagotchiX dw 80
+	tamagotchiY dw 270
+    ; posicao do tamagotchi falecido na tela
 	tamagotchiMortoX dw 85
 	tamagotchiMortoY dw 290
 	; informações que a funcao draw_anything vai usar, porque assim pra qualquer desenho a gente chama ela
@@ -51,53 +76,64 @@ data:
 	spriteH dw 0
 	; o desenho
 	currentSprite dw 0
-    
+
 start:
     xor ax, ax
     mov ds, ax
     mov es, ax
     call modoVideoCor
-    call tela_gameOver
+    call mostraMenu
+    ;ler ordem do usuário
+    call lerChar
+    cmp al, '1'
+        je tela_gameOver
     jmp fim
-    
+
+
+
 mostraMenu:
-
-    mov bl, 1 ;cor do texto
-
+    ;aqui a cor da letra
+    mov ah, 0xe
+	mov bh, 0
+	mov bl, 0xd
+	int 10h
+    ;posicionar título
+    add dl, 15
+    add dh, 4
+    call andarEspaco
     mov si, titulo
     call printString
     call pularLinha
+    ;desenhar o tamagotchi
+    call drawTamagotchi
+    ;como a gente limpa todos os registradores depois de draw, tem que setar tudo de novo
+    mov ah, 0xe
+	mov bh, 0
+	mov bl, 0xd
+	int 10h
+    ;posicionar jogar
+    add dl, 15
+    add dh, 15
+    call andarEspaco
     mov si, jogar
     call printString
-    call pularLinha
+    ;posicionar instruções
+    sub dl, 2
+    add dh, 2
+    call andarEspaco
     mov si, instrucoes
     call printString
-    call pularLinha
+    ;posicionar creditos
+    add dl, 1
+    add dh, 2
+    call andarEspaco
     mov si, creditos
     call printString
-    call pularLinha
     ret
-
-modoVideoCor:
-    ;modo video
-    mov ah, 0h 
-    mov al, 13h
-    int 10h
-
-    mov ah, 0xb 
-    mov bh, 0 
-    mov bl, 0xd ;cor
-    int 10h
-
-    ret
-clearRegistradores:
-    xor ax,ax
-    xor bx,bx
-    xor cx,cx
-    xor dx,dx
-	ret
 
 tela_gameOver:
+    call limparTela
+    call modoVideoCor
 	mov ah, 0xe
 	mov bh, 0
 	mov bl, 0xd ; aqui a cor da letra
@@ -106,38 +142,13 @@ tela_gameOver:
 	mov si, gameOver
 
 	;isso aqui eh pra posicionar a string, pode mudar
-	mov dh, 7
-	call pularLinha
-	mov dl, 3
+	mov dl, 14
+    mov dh, 7
 	call andarEspaco
 
     call printString
 	call draw_tamagotchiMorto
-
-	ret
-
-draw_tamagotchiMorto:
-	xor ax, ax	; zero o ax que eu vou usar pra nao dar merda
-	; vou colocar os valores do tamagotchiMorto no lugar certo
-
-	mov ax, [tamagotchiMortoX]
-	mov [drawX], ax
-
-	mov ax, [tamagotchiMortoY]
-	mov [drawY], ax
-
-	mov ax, [tamagotchiW]
-	mov [spriteW], ax
-
-	mov ax, [tamagotchiH]
-	mov [spriteH], ax
-
-	mov ax, tamagotchiMorto
-	mov [currentSprite], ax
-
-	call draw_anything
-
-	ret
+    jmp fim
 
 draw_anything:
 	call clearRegistradores	; zero tudo porque vou usar muita coisa
@@ -184,6 +195,64 @@ draw_anything:
 		call clearRegistradores	;limpo tudo pq melhor prevenir
 		ret
 
+drawTamagotchi:
+    xor ax, ax
+    mov ax, [tamagotchiX]
+	mov [drawX], ax
+
+	mov ax, [tamagotchiY]
+	mov [drawY], ax
+
+	mov ax, [tamagotchiW]
+	mov [spriteW], ax
+
+	mov ax, [tamagotchiH]
+	mov [spriteH], ax
+
+	mov ax, tamagotchi
+	mov [currentSprite], ax
+
+	call draw_anything
+
+	ret
+
+draw_tamagotchiMorto:
+	xor ax, ax	; zero o ax que eu vou usar pra nao dar merda
+	; vou colocar os valores do tamagotchiMorto no lugar certo
+
+	mov ax, [tamagotchiMortoX]
+	mov [drawX], ax
+
+	mov ax, [tamagotchiMortoY]
+	mov [drawY], ax
+
+	mov ax, [tamagotchiW]
+	mov [spriteW], ax
+
+	mov ax, [tamagotchiH]
+	mov [spriteH], ax
+
+	mov ax, tamagotchiMorto
+	mov [currentSprite], ax
+
+	call draw_anything
+
+	ret
+
+modoVideoCor:
+    ;modo video
+    mov ah, 0h 
+    mov al, 13h ;mov al, 0xd modo antigo
+    int 10h
+
+    mov ah, 0xb 
+    mov bh, 0 
+    mov bl, 0xd ;cor
+    int 10h
+
+    ret
+
+
 lerChar:
     mov ah, 0x00
     int 16h
@@ -194,15 +263,6 @@ printChar:
     int 10h
     ret
 
-printString:
-    lodsb       ;passa da posição de di da string pra al
-    cmp al, 0
-        je .fin
-    call printChar
-    jmp printString
-    .fin:
-        ret
-        
 lerString:
     mov al, 0
     .for:
@@ -217,6 +277,17 @@ lerString:
         mov al, 0
         stosb
         ret
+
+printString:
+    lodsb       ;passa da posição de di da string pra al
+    cmp al, 0
+        je .fin
+    call printChar
+    jmp printString
+    .fin:
+        ret
+        
+
 pularLinha:
     mov ah, 02h
     mov bh, 0
@@ -227,8 +298,20 @@ pularLinha:
 andarEspaco:
     mov ah, 02h
     mov bh, 0
-    add dl, 10
     int 10h
     ret
+
+limparTela:
+    mov ah, 0
+    mov al, 12h
+    int 10h
+    ret
+clearRegistradores:
+    xor ax,ax
+    xor bx,bx
+    xor cx,cx
+    xor dx,dx
+	ret
 fim:    
     jmp $
+
