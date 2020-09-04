@@ -124,7 +124,7 @@ clearRegistradores:
 
 tela_gameOver:
 	mov ah, 0xe
-	mov al, 175
+	;mov al, 175 era isso aqui a setinha que ficava no inicio kk
 	mov bh, 0
 	mov bl, 0xd ; aqui a cor da letra
 	int 10h
