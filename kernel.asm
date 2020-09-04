@@ -7,6 +7,8 @@ data:
     instrucoes db 'instrucoes (2)', 0
     creditos db 'creditos (3)', 0
     gameOver db 'GAME OVER X_X', 0
+    escolhaNome db 'Escolha o nome: ', 0
+    nome db 0
     tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00, 00
@@ -82,21 +84,15 @@ start:
     mov ds, ax
     mov es, ax
     call modoVideoCor
-    call mostraMenu
+    call telaMenu
     ;ler ordem do usuário
     call lerChar
     cmp al, '1'
-        je tela_gameOver
+        je telaNome
     jmp fim
 
-
-
-mostraMenu:
-    ;aqui a cor da letra
-    mov ah, 0xe
-	mov bh, 0
-	mov bl, 0xd
-	int 10h
+telaMenu:
+    call corLetra
     ;posicionar título
     add dl, 15
     add dh, 4
@@ -107,10 +103,7 @@ mostraMenu:
     ;desenhar o tamagotchi
     call drawTamagotchi
     ;como a gente limpa todos os registradores depois de draw, tem que setar tudo de novo
-    mov ah, 0xe
-	mov bh, 0
-	mov bl, 0xd
-	int 10h
+    call corLetra
     ;posicionar jogar
     add dl, 15
     add dh, 15
@@ -131,13 +124,39 @@ mostraMenu:
     call printString
     ret
 
-tela_gameOver:
+telaNome:
     call limparTela
     call modoVideoCor
-	mov ah, 0xe
-	mov bh, 0
-	mov bl, 0xd ; aqui a cor da letra
-	int 10h
+    call drawTamagotchi
+    call corLetra
+    mov dl, 5
+    mov dh, 4
+    call andarEspaco
+    mov si, escolhaNome
+    call printString
+    mov di, nome
+    call lerString
+    jmp telaGameOver
+
+telaJogo:
+    call limparTela
+    call modoVideoCor
+    call drawTamagotchi
+    call corLetra
+    mov dl, 5
+    mov dh, 4
+    call andarEspaco
+    ;aqui da merda hihi
+    mov si, nome
+    call printString
+    call lerChar
+    jmp telaGameOver
+
+
+telaGameOver:
+    call limparTela
+    call modoVideoCor
+	call corLetra
 
 	mov si, gameOver
 
@@ -252,6 +271,12 @@ modoVideoCor:
 
     ret
 
+corLetra:
+    mov ah, 0xe
+	mov bh, 0
+	mov bl, 0xd ; aqui a cor da letra
+	int 10h
+    ret
 
 lerChar:
     mov ah, 0x00
@@ -268,6 +293,8 @@ lerString:
     .for:
         call lerChar 
         stosb   ;pega o caracter no al e coloca no endereço de memoria onde di aponta
+        ;mov si, nome
+        ;call printString
         call printChar 
         cmp al, 13 ;chegou no enter?
             je .fim ;cabou string
@@ -279,7 +306,7 @@ lerString:
         ret
 
 printString:
-    lodsb       ;passa da posição de di da string pra al
+    lodsb       ;passa da posição de si da string pra al
     cmp al, 0
         je .fin
     call printChar
