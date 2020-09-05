@@ -90,6 +90,39 @@ data:
     db 00, 00, 00, 00, 13, 13, 13, 00, 00, 00, 00
     db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
 
+    vida1 db 00, 00, 00, 13, 13, 13, 13, 00, 00, 00, 00
+    db 00, 00, 13, 13, 13, 13, 13, 13, 00, 00, 00
+    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 00, 00
+    db 13, 13, 13, 00, 13, 13, 00, 13, 13, 13, 00
+    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 13, 13, 13, 00, 13, 13, 00, 13, 13, 13, 00
+    db 00, 13, 13, 13, 00, 00, 13, 13, 13, 00, 00
+    db 00, 00, 13, 13, 13, 13, 13, 13, 00, 00, 00
+    db 00, 00, 00, 13, 13, 13, 13, 00, 00, 00, 00
+
+    vida2 db 00, 00, 13, 13, 00, 00, 00, 13, 13, 00, 00
+    db 00, 13, 13, 13, 13, 00, 13, 13, 13, 13, 00
+    db 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13
+    db 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13
+    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 00, 00, 13, 13, 13, 13, 13, 13, 13, 00, 00
+    db 00, 00, 00, 13, 13, 13, 13, 13, 00, 00, 00
+    db 00, 00, 00, 00, 13, 13, 13, 00, 00, 00, 00
+    db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
+
+    vida3 db 00, 00, 13, 13, 00, 00, 00, 13, 13, 00, 00
+    db 00, 13, 13, 13, 13, 00, 13, 13, 13, 13, 00
+    db 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13
+    db 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13
+    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 00, 00, 13, 13, 13, 13, 13, 13, 13, 00, 00
+    db 00, 00, 00, 13, 13, 13, 13, 13, 00, 00, 00
+    db 00, 00, 00, 00, 13, 13, 13, 00, 00, 00, 00
+    db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
+
     comida db 00, 00, 00, 00, 00, 00, 00, 00, 06, 00, 00
     db 00, 00, 00, 02, 10, 10, 00, 06, 00, 00, 00
     db 00, 00, 02, 02, 02, 02, 06, 00, 00, 00, 00
@@ -202,18 +235,18 @@ data:
     ;tamanho dos objetos
     comidaW dw 11
     comidaH dw 14
-    comidaX dw 100
-    comidaY dw 100
+    comidaX dw 130
+    comidaY dw 60
 
     banheiraW dw 25
     banheiraH dw 25
-    banheiraX dw 100
-    banheiraY dw 100 
+    banheiraX dw 80
+    banheiraY dw 270 
 
     arvoreW dw 11
     arvoreH dw 25
-    arvoreX dw 100
-    arvoreY dw 100
+    arvoreX dw 120
+    arvoreY dw 70
 
     dormindoW dw 26
     dormindoH dw 29
@@ -466,66 +499,213 @@ loopJogo:
 telaAlimenta:
     call limparTela
     call modoVideoCor
-    call corLetra
-    
+    call drawTamagotchi
     call drawMaca
-        .esperaEnter:
-        mov ah, 0
-			int 16h
-			cmp al, 13
-			jne esperaEnter	
+    call drawVidas
+	mov bl, [cor] ; aqui a cor da letra
+	call corLetra
+    mov dl, 2
+    mov dh, 0
+    call andarEspaco
+    mov si, nome
+    call printString
 
-    ;call limparTela
-    jmp telaJogo
+    mov si, alimenta
+    mov dl, 5
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, passea
+    mov dl, 5
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov si, dorme
+    mov dl, 24
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, banho
+    mov dl, 24
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
+    mov ch, 0   ; horas
+    mov cl, 0   ; minutos
+    mov dh, 0   ; segundos
+    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
+    int 1aH     ; interrupcao que lida com o tempo do sistema
+    jmp .espera
+    
+    .espera:
+        mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
+        int 1aH     ; interrupcao que lida com o tempo do sistema
+        cmp dh, 2
+            je telaJogo
+        jmp .espera
 
 telaPassea:
     call limparTela
     call modoVideoCor
-    call corLetra
-    
-    ;falta fazer os Zzz 
+    call drawTamagotchi
     call drawPassea
-        .esperaEnter:
-        mov ah, 0
-			int 16h
-			cmp al, 13
-			jne esperaEnter	
+    call drawVidas
+	mov bl, [cor] ; aqui a cor da letra
+	call corLetra
+    mov dl, 2
+    mov dh, 0
+    call andarEspaco
+    mov si, nome
+    call printString
 
-    ;call limparTela
-    jmp telaJogo
+    mov si, alimenta
+    mov dl, 5
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, passea
+    mov dl, 5
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov si, dorme
+    mov dl, 24
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, banho
+    mov dl, 24
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
+    mov ch, 0   ; horas
+    mov cl, 0   ; minutos
+    mov dh, 0   ; segundos
+    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
+    int 1aH     ; interrupcao que lida com o tempo do sistema
+    jmp .espera
+    
+    .espera:
+        mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
+        int 1aH     ; interrupcao que lida com o tempo do sistema
+        cmp dh, 2
+            je telaJogo
+        jmp .espera
 
 
 telaDorme:
     call limparTela
     call modoVideoCor
-    call corLetra
-    
-    ;falta fazer os Zzz 
     call drawDormindo
-        .esperaEnter:
-        mov ah, 0
-			int 16h
-			cmp al, 13
-			jne esperaEnter	
+    call drawVidas
+	mov bl, [cor] ; aqui a cor da letra
+	call corLetra
+    mov dl, 2
+    mov dh, 0
+    call andarEspaco
+    mov si, nome
+    call printString
 
-    ;call limparTela
-    jmp telaJogo
+    mov si, alimenta
+    mov dl, 5
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, passea
+    mov dl, 5
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov si, dorme
+    mov dl, 24
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, banho
+    mov dl, 24
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
+    mov ch, 0   ; horas
+    mov cl, 0   ; minutos
+    mov dh, 0   ; segundos
+    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
+    int 1aH     ; interrupcao que lida com o tempo do sistema
+    jmp .espera
+    
+    .espera:
+        mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
+        int 1aH     ; interrupcao que lida com o tempo do sistema
+        cmp dh, 2
+            je telaJogo
+        jmp .espera
 
 telaBanho:
     call limparTela
     call modoVideoCor
-    call corLetra
-    
-    ;falta fazer os Zzz 
     call drawBanho
-        .esperaEnter:
-        mov ah, 0
-			int 16h
-			cmp al, 13
-			jne esperaEnter	
+    call drawVidas
+	mov bl, [cor] ; aqui a cor da letra
+	call corLetra
+    mov dl, 2
+    mov dh, 0
+    call andarEspaco
+    mov si, nome
+    call printString
 
-    ;call limparTela
-    jmp telaJogo
+    mov si, alimenta
+    mov dl, 5
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, passea
+    mov dl, 5
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov si, dorme
+    mov dl, 24
+    mov dh, 17
+    call andarEspaco
+    call printString
+
+    mov si, banho
+    mov dl, 24
+    mov dh, 19
+    call andarEspaco
+    call printString
+
+    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
+    mov ch, 0   ; horas
+    mov cl, 0   ; minutos
+    mov dh, 0   ; segundos
+    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
+    int 1aH     ; interrupcao que lida com o tempo do sistema
+    jmp .espera
+    
+    .espera:
+        mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
+        int 1aH     ; interrupcao que lida com o tempo do sistema
+        cmp dh, 2
+            je telaJogo
+        jmp .espera
 
 telaInstrucoes:
     call limparTela
@@ -854,7 +1034,7 @@ drawVida:
 
 drawMaca:
     xor ax, ax
-    mov ax, [comidaY]
+    mov ax, [comidaX]
     mov [drawX], ax
     mov ax, [comidaY]
     mov [drawY], ax
