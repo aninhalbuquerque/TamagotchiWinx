@@ -12,8 +12,14 @@ data:
     aninha db 'Ana Leticia (alas3)', 0
     alice db 'Alice Oliveira (aoqb)', 0
     vic db 'Victoria Luisi (vlsc)', 0
-    escolhaNome db 'Escolha o nome: ', 0
-    nome db 0
+    escolhaNome db 'Escolha o nome (ate 15 digitos): ', 0
+    escolhaCor db 'Escolha a cor do seu tamagotchi:', 0
+    azul db 'azul (1)', 0
+    rosa db 'rosa (2)', 0
+    verde db 'verde (3)', 0
+    nome_max_len    equ 15
+    nome:   resb    nome_max_len+1
+    cor db 0
     voltarMenu db 'Aperte enter pra voltar pro menu', 0
     tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
@@ -40,6 +46,7 @@ data:
     db  00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    
     tamagotchiMorto db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00
 	db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00
 	db  00, 00, 00, 00, 00, 00, 15, 15, 04, 04, 04, 04, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00 
@@ -163,20 +170,87 @@ telaNome:
     call andarEspaco
     mov si, escolhaNome
     call printString
-    mov di, nome
+    mov dh, 5
+    call pularLinha
+    mov dl, 5
+    call andarEspaco
     call lerString
+    call telaCor
     jmp telaJogo
+telaCor:
+    call limparTela
+    call modoVideoCor
+    call corLetra
+    
+    mov dl, 3
+    mov dh, 4
+    call andarEspaco
+    mov si, escolhaCor
+    call printString
 
+    call drawTamagotchi
+    ;como a gente limpa todos os registradores depois de draw, tem que setar tudo de novo
+    mov ah, 0xe
+	mov bh, 0
+	mov bl, 9 ; aqui a cor da letra
+	int 10h
+
+    ;posicionar azul
+    add dl, 15
+    add dh, 15
+    call andarEspaco
+    mov si, azul
+    call printString
+
+    mov ah, 0xe
+	mov bh, 0
+	mov bl, 13 ; aqui a cor da letra
+	int 10h
+    ;posicionar rosa
+    add dh, 3
+    call andarEspaco
+    mov si, rosa
+    call printString
+
+    ;fazer verde
+    mov ah, 0xe
+	mov bh, 0
+	mov bl, 10
+	int 10h ; coloca a letra verde
+
+    sub dl, 1   ; posiciona a string e printa
+    add dh, 3
+    call andarEspaco
+    mov si, verde
+    call printString
+    
+    ; ler entrada e comparar
+    call lerChar
+    cmp al, '1'
+    je .azul
+    cmp al, '2'
+    je .rosa
+    ;.verde:
+    mov ah, 2
+    mov [cor], ah
+    ret
+    .azul:
+        mov ah, 9
+        mov [cor], ah
+        ret
+    .rosa:
+        mov ah, 13
+        mov [cor], ah
+        ret
 telaJogo:
     call limparTela
     call modoVideoCor
     call drawTamagotchi
     call draw3Vidas
     call corLetra
-    mov dl, 5
+    mov dl, 10
     mov dh, 4
     call andarEspaco
-    ;aqui da merda hihi
     mov si, nome
     call printString
     call lerChar
@@ -284,9 +358,11 @@ drawAnything:
 		lodsb	;vai pegar oq ta na si, que no caso eh o sprite
 		cmp al, 0	; se for 0 eh espaco em branco e nao vamos printar nada
 		je .naoprinta0	;ai eu pulo pra incrementar os contadores e seguir pro prox pixel
-
-		;mov al, 15 ; cor branca pro pixel
-		mov [es:di], al	;es+deslocamento = primeiro pixel da tela + quantos pixels eu vou pular pra chegar no lugar q eu quero e al tem a cor que eu vou colocar. esse eh o print
+        cmp al, 13
+        jne .pulaCor
+        mov al, [cor] ; cor branca pro pixel
+            .pulaCor:
+		    mov [es:di], al	;es+deslocamento = primeiro pixel da tela + quantos pixels eu vou pular pra chegar no lugar q eu quero e al tem a cor que eu vou colocar. esse eh o print
 
 		.naoprinta0:
 			inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
@@ -461,7 +537,6 @@ corLetra:
 	mov bl, 0xd ; aqui a cor da letra
 	int 10h
     ret
-
 lerChar:
     mov ah, 0x00
     int 16h
@@ -473,20 +548,21 @@ printChar:
     ret
 
 lerString:
-    mov al, 0
+    mov di, nome
+    lea si, [di+nome_max_len]
     .for:
+        cmp di, si
+        jae .fim
         call lerChar 
-        stosb   ;pega o caracter no al e coloca no endereço de memoria onde di aponta
-        ;mov si, nome
-        ;call printString
         call printChar 
         cmp al, 13 ;chegou no enter?
-            je .fim ;cabou string
+        je .fim ;cabou string
+        
+        mov [di], al
+        inc di
         jmp .for ;faz dnv
     .fim:
-        dec di ;na ultima posição da string tava salvo o enter, aí a gente vai colocar o 0 no lugar
-        mov al, 0
-        stosb
+        mov [di], byte 0
         ret
 
 printString:
