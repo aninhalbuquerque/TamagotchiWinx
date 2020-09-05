@@ -6,9 +6,15 @@ data:
     jogar db 'jogar (1)', 0
     instrucoes db 'instrucoes (2)', 0
     creditos db 'creditos (3)', 0
+    creditos2 db 'CREDITOS', 0
     gameOver db 'GAME OVER X_X', 0
+    day db 'Dayane Lira (dls6)', 0
+    aninha db 'Ana Leticia (alas3)', 0
+    alice db 'Alice Oliveira (aoqb)', 0
+    vic db 'Victoria Luisi (vlsc)', 0
     escolhaNome db 'Escolha o nome: ', 0
     nome db 0
+    voltarMenu db 'Aperte enter pra voltar pro menu', 0
     tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00, 00
@@ -34,31 +40,41 @@ data:
     db  00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-    tamagotchiMorto db  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 15, 15, 15, 15, 15,  0,  0,  0,  0,  0,  0,  0
-	db  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 15, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0,  0,  0
-	db  0,  0,  0,  0,  0,  0, 15, 15,  4,  4,  4,  4, 13, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0,  0 
-	db  0,  0,  0,  0,  0, 15, 13,  4,  4, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0,  0
-	db  0,  0,  0,  0, 15, 13,  4, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0
-	db  0,  0,  0, 15, 13, 13,  4, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0
-	db  0,  0,  0, 15, 13,  4, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 13, 15,  0,  0,  0,  0
-    db  0,  0,  0, 15, 13,  4, 13, 15, 13, 15, 13, 13, 13,  4, 15, 13, 15, 13, 13, 13, 13, 15,  0,  0,  0
-    db  0,  0,  0, 15, 13,  4, 13, 13, 15, 13, 13, 13, 13, 13,  4, 15, 13, 13, 13, 13, 13, 15,  0,  0,  0
-    db  0,  0, 15, 13,  4, 13, 13, 13, 15, 13, 13, 13, 13, 13,  4, 15, 13, 13, 13, 13, 13, 15,  0,  0,  0
-    db  0,  0, 15, 13,  4, 13, 13, 15, 13, 15, 13, 13, 13, 13, 15,  4, 15, 13, 13, 13, 13, 15,  0,  0,  0
-    db  0,  0, 15, 13,  4, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 15,  0,  0,  0
-    db  0,  0, 15, 13,  4, 13, 13, 13, 13, 13, 13, 15, 15, 13, 13,  4, 13, 13, 13, 13, 13, 13, 15,  0,  0
-    db  0,  0, 15,  4, 13, 13, 13, 13, 13, 13, 15, 13, 13, 15, 13, 13,  4, 13, 13, 13, 13, 13, 15,  0,  0
-    db  0, 15, 13,  4, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 15, 15,  0
-    db 15, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 15
-    db 15, 13, 13,  4, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 13, 15
-    db 15, 15, 13,  4, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 13, 13, 13, 13, 15
-    db  0,  0, 15,  4, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 13, 13, 15, 15, 15,  0
-    db  0,  0,  4,  4, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,  4, 15,  4,  4,  0,  0
-    db  0,  4,  4,  4,  4,  4, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,  4,  4,  4,  4,  4,  0
-    db  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4
-    db  0,  0,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0
-    db  0,  0,  0,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0,  0
-    db  0,  0,  0,  0,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0,  0,  0,  0
+    tamagotchiMorto db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00
+	db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00
+	db  00, 00, 00, 00, 00, 00, 15, 15, 04, 04, 04, 04, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00 
+	db  00, 00, 00, 00, 00, 15, 13, 04, 04, 13, 13, 04, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00
+	db  00, 00, 00, 00, 15, 13, 04, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+	db  00, 00, 00, 15, 13, 13, 04, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+	db  00, 00, 00, 15, 13, 04, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+    db  00, 00, 00, 15, 13, 04, 13, 15, 13, 15, 13, 13, 13, 04, 15, 13, 15, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 00, 15, 13, 04, 13, 13, 15, 13, 13, 13, 13, 13, 04, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 04, 13, 13, 13, 15, 13, 13, 13, 13, 13, 04, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 04, 13, 13, 15, 13, 15, 13, 13, 13, 13, 15, 04, 15, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 04, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 04, 13, 13, 13, 13, 13, 13, 15, 15, 13, 13, 04, 13, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 00, 15, 04, 13, 13, 13, 13, 13, 13, 15, 13, 13, 15, 13, 13, 04, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 15, 13, 04, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 15, 15, 00
+    db  15, 13, 13, 04, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 13, 13, 15
+    db  15, 13, 13, 04, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 13, 15
+    db  15, 15, 13, 04, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 13, 13, 13, 13, 15
+    db  00, 00, 15, 04, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 13, 13, 15, 15, 15, 00
+    db  00, 00, 04, 04, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 04, 15, 04, 04, 00, 00
+    db  00, 04, 04, 04, 04, 04, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 04, 04, 04, 04, 04, 00
+    db  04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04
+    db  00, 00, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 00
+    db  00, 00, 00, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 00, 00
+    db  00, 00, 00, 00, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 04, 00, 00, 00, 00
+    vida db 00, 00, 13, 13, 00, 00, 00, 13, 13, 00, 00
+    db 00, 13, 13, 13, 13, 00, 13, 13, 13, 13, 00
+    db 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13
+    db 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13
+    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
+    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 00, 00, 13, 13, 13, 13, 13, 13, 13, 00, 00
+    db 00, 00, 00, 13, 13, 13, 13, 13, 00, 00, 00
+    db 00, 00, 00, 00, 13, 13, 13, 00, 00, 00, 00
+    db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
     ; tamanho do corpo do tamagotchi x_x
 	tamagotchiW dw 25
 	tamagotchiH dw 25
@@ -68,7 +84,16 @@ data:
     ; posicao do tamagotchi falecido na tela
 	tamagotchiMortoX dw 85
 	tamagotchiMortoY dw 290
-	; informações que a funcao draw_anything vai usar, porque assim pra qualquer desenho a gente chama ela
+    ; tamanho do <3
+    vidaW dw 11
+    vidaH dw 10
+    vida1X dw 9
+    vida2X dw 22
+    vida3X dw 35
+    vida4X dw 48
+    vida5X dw 61
+    vidaY dw 2
+	; informações que a funcao drawAnything vai usar, porque assim pra qualquer desenho a gente chama ela
 	; so precisa setar esses valores pra imagem que a gente quiser colocar
 	; drawX e Y sao a posicao x e y na tela
 	drawX dw 0
@@ -85,17 +110,21 @@ start:
     mov es, ax
     call modoVideoCor
     call telaMenu
+    jmp .espera
     ;ler ordem do usuário
-    call lerChar
-    cmp al, '1'
-        je telaNome
-    jmp fim
+    .espera:
+        call lerChar
+        cmp al, '1'
+            je telaNome
+        cmp al, '3'
+            je telaCreditos
+        jmp .espera
 
 telaMenu:
     call corLetra
     ;posicionar título
-    add dl, 15
-    add dh, 4
+    mov dl, 15
+    mov dh, 4
     call andarEspaco
     mov si, titulo
     call printString
@@ -136,12 +165,13 @@ telaNome:
     call printString
     mov di, nome
     call lerString
-    jmp telaGameOver
+    jmp telaJogo
 
 telaJogo:
     call limparTela
     call modoVideoCor
     call drawTamagotchi
+    call draw3Vidas
     call corLetra
     mov dl, 5
     mov dh, 4
@@ -152,6 +182,58 @@ telaJogo:
     call lerChar
     jmp telaGameOver
 
+telaCreditos:
+    call limparTela
+    call modoVideoCor
+    call corLetra
+
+    mov si, creditos2
+	mov dl, 16
+    mov dh, 4
+	call andarEspaco
+    call printString
+
+    mov si, alice
+    mov dl, 10
+    mov dh, 13
+	call andarEspaco
+    call printString
+
+    mov si, aninha
+    mov dl, 11
+    mov dh, 15
+	call andarEspaco
+    call printString
+
+    mov si, day
+    mov dl, 11
+    mov dh, 17
+	call andarEspaco
+    call printString
+
+    mov si, vic
+    mov dl, 10
+    mov dh, 19
+	call andarEspaco
+    call printString
+
+    mov si, voltarMenu
+    mov dl, 4
+    mov dh, 22
+	call andarEspaco
+    call printString
+
+	call drawTamagotchi
+
+    esperaEnter:
+			mov ah, 0
+			int 16h
+			cmp al, 13
+			jne esperaEnter	
+
+    ;call limparTela
+    jmp start
+
 
 telaGameOver:
     call limparTela
@@ -159,17 +241,27 @@ telaGameOver:
 	call corLetra
 
 	mov si, gameOver
-
 	;isso aqui eh pra posicionar a string, pode mudar
 	mov dl, 14
     mov dh, 7
 	call andarEspaco
-
     call printString
-	call draw_tamagotchiMorto
-    jmp fim
+    mov si, voltarMenu
+    mov dl, 4
+    mov dh, 18
+    call andarEspaco
+    call printString
+	call drawTamagotchiMorto
+    jmp .espera
 
-draw_anything:
+    .espera:
+        call lerChar
+        cmp al, 13
+            jne .espera
+        call limparTela
+        jmp start
+
+drawAnything:
 	call clearRegistradores	; zero tudo porque vou usar muita coisa
 
 	push 0a000h
@@ -231,11 +323,11 @@ drawTamagotchi:
 	mov ax, tamagotchi
 	mov [currentSprite], ax
 
-	call draw_anything
+	call drawAnything
 
 	ret
 
-draw_tamagotchiMorto:
+drawTamagotchiMorto:
 	xor ax, ax	; zero o ax que eu vou usar pra nao dar merda
 	; vou colocar os valores do tamagotchiMorto no lugar certo
 
@@ -254,7 +346,99 @@ draw_tamagotchiMorto:
 	mov ax, tamagotchiMorto
 	mov [currentSprite], ax
 
-	call draw_anything
+	call drawAnything
+
+	ret
+
+draw5Vidas:
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida2X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida3X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida4X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida5X]
+	mov [drawX], ax
+    call drawVida
+    ret
+
+draw4Vidas:
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida2X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida3X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida4X]
+	mov [drawX], ax
+    call drawVida
+    ret
+
+draw3Vidas:
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida2X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida3X]
+	mov [drawX], ax
+    call drawVida
+    ret
+
+draw2Vidas:
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawVida
+    xor ax, ax
+    mov ax, [vida2X]
+	mov [drawX], ax
+    call drawVida
+    ret
+
+draw1Vida:
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawVida
+    ret
+
+drawVida:
+    mov ax, [vidaY]
+	mov [drawY], ax
+
+	mov ax, [vidaW]
+	mov [spriteW], ax
+
+	mov ax, [vidaH]
+	mov [spriteH], ax
+
+	mov ax, vida
+	mov [currentSprite], ax
+
+	call drawAnything
 
 	ret
 
