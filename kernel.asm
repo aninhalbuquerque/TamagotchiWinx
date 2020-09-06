@@ -2,32 +2,52 @@ org 0x7e00
 jmp 0x0000:start
 
 data:
+    ;tela Menu
 	titulo db 'TAMAGOTCHI', 0
     jogar db 'jogar (1)', 0
     instrucoes db 'instrucoes (2)', 0
+    creditos db 'creditos (3)', 0
+
+    ;tela Instruções
     instrucoes2 db 'INSTRUCOES', 0
+    texto1 db 'Existem 3 tipos de vida, que decrescem acada 3 segundos', 0
+    texto2 db '1. Alimentar aumenta 1 coracao', 0
+    texto3 db '2. Passear aumenta 1 carinha feliz', 0
+    texto4 db '3. Dar banho aumenta 1 gota', 0
+    texto5 db '4. Dormir aumenta 1 coracao e 1 carinha feliz', 0
+    texto6 db 'Se alguma vida acabar ou extrapolar, o  tamagotchi morre', 0
+
     alimenta db 'Q - alimentar', 0
     passea db 'W - passear', 0
     dorme db 'E - nanar', 0
     banho db 'R - banho', 0
-    creditos db 'creditos (3)', 0
+    ;tela Créditos    
     creditos2 db 'CREDITOS', 0
-    gameOver db 'GAME OVER X_X', 0
     day db 'Dayane Lira (dls6)', 0
     aninha db 'Ana Leticia (alas3)', 0
     alice db 'Alice Oliveira (aoqb)', 0
     vic db 'Victoria Luisi (vlsc)', 0
+
+    ;tela Nome
     escolhaNome db 'Escolha o nome (ate 15 digitos): ', 0
+    nome_max_len    equ 15
+    nome:   resb    nome_max_len+1
+
+    ;tela Cor
     escolhaCor db 'Escolha a cor do seu tamagotchi:', 0
     azul db 'azul (1)', 0
     rosa db 'rosa (2)', 0
     verde db 'verde (3)', 0
-    nome_max_len    equ 15
-    nome:   resb    nome_max_len+1
+
+    ;tela GameOver
+    gameOver db 'GAME OVER X_X', 0
+    
+    ;variáveis
     cor db 0
     qtVidas db 0
     qtHappy db 0
     qtGotas db 0
+
     voltarMenu db 'Aperte enter pra voltar pro menu', 0
     tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
@@ -217,15 +237,17 @@ data:
     ; tamanho do <3
     vidaW dw 11
     vidaH dw 10
+    ; posição X das vidas
     vida1X dw 239
     vida2X dw 252
     vida3X dw 265
     vida4X dw 278
     vida5X dw 291
+    ; posição Y das vidas
     vidaY dw 2
     vida1Y dw 14
     vida2Y dw 26
-    ;tamanho dos objetos
+    ;tamanho e posição dos objetos
     comidaW dw 11
     comidaH dw 14
     comidaX dw 130
@@ -275,7 +297,7 @@ start:
         jmp .espera
 
 telaMenu:
-    ;setando quantidade de vidas pra 5
+    ;setando quantidade de vidas pra 5 e a cor default do tamagotchi
     mov ah, 5
     mov [qtVidas], ah
     mov ah, 5
@@ -321,16 +343,19 @@ telaNome:
     call drawTamagotchi
     mov bl, 0xd ; aqui a cor da letra
     call corLetra
+    ; posicionar a texto de escolher nome
     mov dl, 5
     mov dh, 4
     call andarEspaco
     mov si, escolhaNome
     call printString
+    ; posicionar onde vai ler o nome
     mov dh, 5
     call pularLinha
     mov dl, 5
     call andarEspaco
     call lerString
+
     call telaCor
     jmp telaJogo
 telaCor:
@@ -346,11 +371,10 @@ telaCor:
     call printString
 
     call drawTamagotchi
+
     ;como a gente limpa todos os registradores depois de draw, tem que setar tudo de novo
-    mov ah, 0xe
-	mov bh, 0
-	mov bl, 9 ; aqui a cor da letra
-	int 10h
+	mov bl, 9 ; aqui a cor da letra azul
+	call corLetra
 
     ;posicionar azul
     add dl, 15
@@ -359,10 +383,9 @@ telaCor:
     mov si, azul
     call printString
 
-    mov ah, 0xe
-	mov bh, 0
-	mov bl, 13 ; aqui a cor da letra
-	int 10h
+	mov bl, 13 ; aqui a cor da letra rosa
+    call corLetra
+
     ;posicionar rosa
     add dh, 3
     call andarEspaco
@@ -370,10 +393,8 @@ telaCor:
     call printString
 
     ;fazer verde
-    mov ah, 0xe
-	mov bh, 0
 	mov bl, 10
-	int 10h ; coloca a letra verde
+	call corLetra
 
     sub dl, 1   ; posiciona a string e printa
     add dh, 3
@@ -400,12 +421,14 @@ telaCor:
         mov [cor], ah
         ret
 telaJogo:
+    ;desenhar a tela do jogo
     call limparTela
     call modoVideoCor
     call drawTamagotchi
     call drawVidas
     call drawHappys
     call drawGotas
+
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -438,25 +461,19 @@ telaJogo:
     call andarEspaco
     call printString
 
-    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
-    mov ch, 0   ; horas
-    mov cl, 0   ; minutos
-    mov dh, 0   ; segundos
-    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
-    int 1aH     ; interrupcao que lida com o tempo do sistema
+    ; setar timer
+    call timer
     
     jmp loopJogo
-    ;call lerChar
-    ;jmp telaGameOver
 
 loopJogo:
-    mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
-    int 1aH     ; interrupcao que lida com o tempo do sistema
-    cmp dh, 3
+    call verTempo
+    
+    cmp dh, 3 ;dh é onde fica os segundos
        jge .diminuirVida
-    mov ah, 1 ;vê o status da entrada 
-    int 16h 
-    jz loopJogo ;se for 0, volta pro loop
+    
+    call verSeTemEntrada
+    jz loopJogo ;se for 0 (ou seja, não tem entrada), volta pro loop
     call lerChar ;se não for 0, ele vê qual é o char
         cmp al, 'q'
             je .alimenta
@@ -528,6 +545,7 @@ telaAlimenta:
     call drawVidas
     call drawHappys
     call drawGotas
+
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -560,12 +578,8 @@ telaAlimenta:
     call andarEspaco
     call printString
 
-    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
-    mov ch, 0   ; horas
-    mov cl, 0   ; minutos
-    mov dh, 0   ; segundos
-    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
-    int 1aH     ; interrupcao que lida com o tempo do sistema
+    call timer
+    
     jmp .espera
     
     .espera:
@@ -615,12 +629,8 @@ telaPassea:
     call andarEspaco
     call printString
 
-    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
-    mov ch, 0   ; horas
-    mov cl, 0   ; minutos
-    mov dh, 0   ; segundos
-    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
-    int 1aH     ; interrupcao que lida com o tempo do sistema
+    call timer
+
     jmp .espera
     
     .espera:
@@ -670,12 +680,8 @@ telaDorme:
     call andarEspaco
     call printString
 
-    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
-    mov ch, 0   ; horas
-    mov cl, 0   ; minutos
-    mov dh, 0   ; segundos
-    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
-    int 1aH     ; interrupcao que lida com o tempo do sistema
+    call timer
+    
     jmp .espera
     
     .espera:
@@ -724,12 +730,8 @@ telaBanho:
     call andarEspaco
     call printString
 
-    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
-    mov ch, 0   ; horas
-    mov cl, 0   ; minutos
-    mov dh, 0   ; segundos
-    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
-    int 1aH     ; interrupcao que lida com o tempo do sistema
+    call timer
+
     jmp .espera
     
     .espera:
@@ -746,31 +748,43 @@ telaInstrucoes:
 
     mov si, instrucoes2
 	mov dl, 15
-    mov dh, 4
+    mov dh, 1
 	call andarEspaco
     call printString
 
-    mov si, alimenta
-    mov dl, 10
-    mov dh, 13
+    mov si, texto1
+    mov dl, 0
+    mov dh, 3
     call andarEspaco
     call printString
 
-    mov si, passea
-    mov dl, 10
+    mov si, texto2
+    mov dl, 1
+    mov dh, 6
+    call andarEspaco
+    call printString
+
+    mov si, texto3
+    mov dl, 1
+    mov dh, 8
+    call andarEspaco
+    call printString
+
+    mov si, texto4
+    mov dl, 1
+    mov dh, 10
+    call andarEspaco
+    call printString
+
+    mov si, texto5
+    mov dl, 1
+    mov dh, 12
+    call andarEspaco
+    call printString
+
+    mov si, texto6
+    mov dl, 0
     mov dh, 15
-    call andarEspaco
-    call printString
-
-    mov si, dorme
-    mov dl, 10
-    mov dh, 17
-    call andarEspaco
-    call printString
-
-    mov si, banho
-    mov dl, 10
-    mov dh, 19
     call andarEspaco
     call printString
 
@@ -782,14 +796,12 @@ telaInstrucoes:
 
     mov ax, 0
 
-	call drawTamagotchi
     .esperaEnter:
         mov ah, 0
 			int 16h
 			cmp al, 13
 			jne esperaEnter	
 
-    ;call limparTela
     jmp start
 
 telaCreditos:
@@ -842,7 +854,6 @@ telaCreditos:
 			cmp al, 13
 			jne esperaEnter	
 
-    ;call limparTela
     jmp start
 
 
@@ -1346,6 +1357,20 @@ drawPassea:
 
 	ret
 
+timer:
+    mov ah, 03h ; escolhe a funcao de ler o tempo do sistema
+    mov ch, 0   ; horas
+    mov cl, 0   ; minutos
+    mov dh, 0   ; segundos
+    mov dl, 1   ; seta o modo entre dia e noite do relogio do sistema(1 para dia)
+    int 1aH     ; interrupcao que lida com o tempo do sistema
+    ret
+
+verTempo:
+    mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
+    int 1aH     ; interrupcao que lida com o tempo do sistema
+    ret
+
 modoVideoCor:
     ;modo video
     mov ah, 0h 
@@ -1364,6 +1389,12 @@ corLetra:
 	mov bh, 0
 	int 10h
     ret
+
+verSeTemEntrada:
+    mov ah, 1 ;vê o status da entrada 
+    int 16h 
+    ret
+
 lerChar:
     mov ah, 0x00
     int 16h
