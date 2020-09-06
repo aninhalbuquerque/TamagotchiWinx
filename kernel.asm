@@ -26,6 +26,8 @@ data:
     nome:   resb    nome_max_len+1
     cor db 0
     qtVidas db 0
+    qtHappy db 0
+    qtGotas db 0
     voltarMenu db 'Aperte enter pra voltar pro menu', 0
     tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
@@ -101,27 +103,16 @@ data:
     db 00, 00, 13, 13, 13, 13, 13, 13, 00, 00, 00
     db 00, 00, 00, 13, 13, 13, 13, 00, 00, 00, 00
 
-    vida2 db 00, 00, 13, 13, 00, 00, 00, 13, 13, 00, 00
-    db 00, 13, 13, 13, 13, 00, 13, 13, 13, 13, 00
-    db 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13
-    db 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13
-    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
-    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
-    db 00, 00, 13, 13, 13, 13, 13, 13, 13, 00, 00
-    db 00, 00, 00, 13, 13, 13, 13, 13, 00, 00, 00
+    vida2 db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
     db 00, 00, 00, 00, 13, 13, 13, 00, 00, 00, 00
-    db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
-
-    vida3 db 00, 00, 13, 13, 00, 00, 00, 13, 13, 00, 00
-    db 00, 13, 13, 13, 13, 00, 13, 13, 13, 13, 00
-    db 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13
-    db 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13
-    db 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
-    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
-    db 00, 00, 13, 13, 13, 13, 13, 13, 13, 00, 00
     db 00, 00, 00, 13, 13, 13, 13, 13, 00, 00, 00
-    db 00, 00, 00, 00, 13, 13, 13, 00, 00, 00, 00
-    db 00, 00, 00, 00, 00, 13, 00, 00, 00, 00, 00
+    db 00, 00, 13, 13, 13, 13, 13, 13, 13, 00, 00
+    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 00, 13, 13, 13, 13, 13, 13, 13, 13, 13, 00
+    db 00, 13, 13, 15, 13, 13, 13, 13, 13, 13, 00
+    db 00, 13, 13, 15, 13, 13, 13, 13, 13, 13, 00
+    db 00, 00, 13, 13, 15, 15, 13, 13, 13, 00, 00
+    db 00, 00, 00, 13, 13, 13, 13, 13, 00, 00, 00
 
     comida db 00, 00, 00, 00, 00, 00, 00, 00, 06, 00, 00
     db 00, 00, 00, 02, 10, 10, 00, 06, 00, 00, 00
@@ -232,6 +223,8 @@ data:
     vida4X dw 278
     vida5X dw 291
     vidaY dw 2
+    vida1Y dw 14
+    vida2Y dw 26
     ;tamanho dos objetos
     comidaW dw 11
     comidaH dw 14
@@ -285,6 +278,10 @@ telaMenu:
     ;setando quantidade de vidas pra 5
     mov ah, 5
     mov [qtVidas], ah
+    mov ah, 5
+    mov [qtHappy], ah
+    mov ah, 5
+    mov [qtGotas], ah
     mov ah, 0
     mov [cor], ah
     ;desenhar o tamagotchi
@@ -407,6 +404,8 @@ telaJogo:
     call modoVideoCor
     call drawTamagotchi
     call drawVidas
+    call drawHappys
+    call drawGotas
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -453,7 +452,7 @@ telaJogo:
 loopJogo:
     mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
     int 1aH     ; interrupcao que lida com o tempo do sistema
-    cmp dh, 5
+    cmp dh, 3
        jge .diminuirVida
     mov ah, 1 ;vê o status da entrada 
     int 16h 
@@ -473,13 +472,14 @@ loopJogo:
         call .aumentarVida
         jmp telaAlimenta
     .passea:
-        call .aumentarVida
+        call .aumentarVida1
         jmp telaPassea
     .dorme:
         call .aumentarVida
+        call .aumentarVida1
         jmp telaDorme
     .banho:
-        call .aumentarVida
+        call .aumentarVida2
         jmp telaBanho
     .diminuirVida:
         mov ah, [qtVidas]
@@ -487,6 +487,16 @@ loopJogo:
         cmp ah, 0
             je telaGameOver
         mov [qtVidas], ah
+        mov ah, [qtHappy]
+        sub ah, 1
+        cmp ah, 0
+            je telaGameOver
+        mov [qtHappy], ah
+        mov ah, [qtGotas]
+        sub ah, 1
+        cmp ah, 0
+            je telaGameOver
+        mov [qtGotas], ah
         jmp telaJogo
     .aumentarVida:
         mov ah, [qtVidas]
@@ -495,6 +505,20 @@ loopJogo:
             je telaGameOver
         mov [qtVidas], ah
         ret
+    .aumentarVida1:
+        mov ah, [qtHappy]
+        add ah, 1
+        cmp ah, 6
+            je telaGameOver
+        mov [qtHappy], ah
+        ret
+    .aumentarVida2:
+        mov ah, [qtGotas]
+        add ah, 1
+        cmp ah, 6
+            je telaGameOver
+        mov [qtGotas], ah
+        ret
 
 telaAlimenta:
     call limparTela
@@ -502,6 +526,8 @@ telaAlimenta:
     call drawTamagotchi
     call drawMaca
     call drawVidas
+    call drawHappys
+    call drawGotas
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -555,6 +581,8 @@ telaPassea:
     call drawTamagotchi
     call drawPassea
     call drawVidas
+    call drawHappys
+    call drawGotas
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -608,6 +636,8 @@ telaDorme:
     call modoVideoCor
     call drawDormindo
     call drawVidas
+    call drawHappys
+    call drawGotas
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -660,6 +690,8 @@ telaBanho:
     call modoVideoCor
     call drawBanho
     call drawVidas
+    call drawHappys
+    call drawGotas
 	mov bl, [cor] ; aqui a cor da letra
 	call corLetra
     mov dl, 2
@@ -1026,6 +1058,206 @@ drawVida:
 	mov [spriteH], ax
 
 	mov ax, vida
+	mov [currentSprite], ax
+
+	call drawAnything
+
+	ret
+
+drawHappys:
+    mov ah, [qtHappy]
+    cmp ah, 1
+        je .draw1
+    cmp ah, 2
+        je .draw2
+    cmp ah, 3
+        je .draw3
+    cmp ah, 4
+        je .draw4
+    ;nenhum, então desenha 5
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawHappy
+    xor ax, ax
+    mov ax, [vida2X]
+	mov [drawX], ax
+    call drawHappy
+    xor ax, ax
+    mov ax, [vida3X]
+	mov [drawX], ax
+    call drawHappy
+    xor ax, ax
+    mov ax, [vida4X]
+	mov [drawX], ax
+    call drawHappy
+    mov ax, [vida5X]
+	mov [drawX], ax
+    call drawHappy
+    ret
+
+    .draw1:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawHappy
+        ret
+    .draw2:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawHappy
+        xor ax, ax
+        mov ax, [vida2X]
+	    mov [drawX], ax
+        call drawHappy
+        ret
+    .draw3:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawHappy
+        xor ax, ax
+        mov ax, [vida2X]
+        mov [drawX], ax
+        call drawHappy
+        xor ax, ax
+        mov ax, [vida3X]
+        mov [drawX], ax
+        call drawHappy
+        ret
+    .draw4:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawHappy
+        xor ax, ax
+        mov ax, [vida2X]
+        mov [drawX], ax
+        call drawHappy
+        xor ax, ax
+        mov ax, [vida3X]
+        mov [drawX], ax
+        call drawHappy
+        xor ax, ax
+        mov ax, [vida4X]
+        mov [drawX], ax
+        call drawHappy
+        ret
+
+
+
+drawHappy:
+    mov ax, [vida1Y]
+	mov [drawY], ax
+
+	mov ax, [vidaW]
+	mov [spriteW], ax
+
+	mov ax, [vidaH]
+	mov [spriteH], ax
+
+	mov ax, vida1
+	mov [currentSprite], ax
+
+	call drawAnything
+
+	ret
+
+drawGotas:
+    mov ah, [qtGotas]
+    cmp ah, 1
+        je .draw1
+    cmp ah, 2
+        je .draw2
+    cmp ah, 3
+        je .draw3
+    cmp ah, 4
+        je .draw4
+    ;nenhum, então desenha 5
+    xor ax, ax
+    mov ax, [vida1X]
+	mov [drawX], ax
+    call drawGota
+    xor ax, ax
+    mov ax, [vida2X]
+	mov [drawX], ax
+    call drawGota
+    xor ax, ax
+    mov ax, [vida3X]
+	mov [drawX], ax
+    call drawGota
+    xor ax, ax
+    mov ax, [vida4X]
+	mov [drawX], ax
+    call drawGota
+    mov ax, [vida5X]
+	mov [drawX], ax
+    call drawGota
+    ret
+
+    .draw1:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawGota
+        ret
+    .draw2:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawGota
+        xor ax, ax
+        mov ax, [vida2X]
+	    mov [drawX], ax
+        call drawGota
+        ret
+    .draw3:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawGota
+        xor ax, ax
+        mov ax, [vida2X]
+        mov [drawX], ax
+        call drawGota
+        xor ax, ax
+        mov ax, [vida3X]
+        mov [drawX], ax
+        call drawGota
+        ret
+    .draw4:
+        xor ax, ax
+        mov ax, [vida1X]
+        mov [drawX], ax
+        call drawGota
+        xor ax, ax
+        mov ax, [vida2X]
+        mov [drawX], ax
+        call drawGota
+        xor ax, ax
+        mov ax, [vida3X]
+        mov [drawX], ax
+        call drawGota
+        xor ax, ax
+        mov ax, [vida4X]
+        mov [drawX], ax
+        call drawGota
+        ret
+
+
+
+drawGota:
+    mov ax, [vida2Y]
+	mov [drawY], ax
+
+	mov ax, [vidaW]
+	mov [spriteW], ax
+
+	mov ax, [vidaH]
+	mov [spriteH], ax
+
+	mov ax, vida2
 	mov [currentSprite], ax
 
 	call drawAnything
