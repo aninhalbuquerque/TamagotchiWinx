@@ -44,19 +44,21 @@ data:
     
     ;variáveis
     cor db 0
+    qualTamagotchi db 0
     qtVidas db 0
     qtHappy db 0
     qtGotas db 0
+    timerFake db 0
 
     voltarMenu db 'Aperte enter pra voltar pro menu', 0
     tamagotchi db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
-    db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00, 00
-    db  00, 00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00, 00
-	db  00, 00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00
+    db  13, 00, 13, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 13, 00, 13, 00
+    db  13, 13, 13, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 13, 13, 13, 00
+	db  00, 13, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 13, 00, 00
 	db  00, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00 
 	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00
 	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
-	db  00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
 	db  00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
     db  00, 00, 00, 15, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
     db  00, 00, 00, 15, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
@@ -71,6 +73,32 @@ data:
     db  15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15
     db  00, 00, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 15, 00
     db  00, 00, 00, 00, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+
+    tamagotchi2 db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
+    db  00, 00, 00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00, 00
+	db  13, 00, 13, 00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00, 00, 00
+	db  13, 13, 13, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 13, 00, 13 
+	db  00, 13, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 13, 13, 13
+	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 13, 00
+	db  00, 00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+	db  00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00, 00
+    db  00, 00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 00, 15, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 13, 15, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 15, 13, 15, 13, 13, 13, 13, 15, 13, 15, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 15, 13, 13, 15, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00, 00
+    db  00, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 00
+    db  15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15
+    db  15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15
+    db  00, 15, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 00
+    db  00, 00, 00, 00, 15, 15, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 15, 15, 15, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
     db  00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00
@@ -260,7 +288,7 @@ data:
 
     arvoreW dw 11
     arvoreH dw 25
-    arvoreX dw 120
+    arvoreX dw 260
     arvoreY dw 70
 
     dormindoW dw 26
@@ -466,11 +494,23 @@ telaJogo:
     
     jmp loopJogo
 
+mexeBicho:
+    mov ah, [timerFake]     ; pra nao repetir a mesma coisa dentro do mesmo segundo
+    cmp dh, ah              ; vou ver se eu já printei naquele segundo
+    je .continua
+ 
+    mov [timerFake], dh     ; se n printei, agr eu vou salvar o tempo no timerFake e desenhar o bicho por cima do outro
+    call drawTamagotchi
+    
+    .continua:
+        ret
+
 loopJogo:
     call verTempo
-    
+    call mexeBicho
+
     cmp dh, 3 ;dh é onde fica os segundos
-       jge .diminuirVida
+    jge .diminuirVida
     
     call verSeTemEntrada
     jz loopJogo ;se for 0 (ou seja, não tem entrada), volta pro loop
@@ -490,6 +530,8 @@ loopJogo:
         jmp telaAlimenta
     .passea:
         call .aumentarVida1
+        mov ax, 260         ;reseta a posicao da arvore pra printar certo dps
+        mov [arvoreX], ax
         jmp telaPassea
     .dorme:
         call .aumentarVida
@@ -499,6 +541,8 @@ loopJogo:
         call .aumentarVida2
         jmp telaBanho
     .diminuirVida:
+        xor ax, ax
+        mov [timerFake], ah
         mov ah, [qtVidas]
         sub ah, 1
         cmp ah, 0
@@ -590,6 +634,7 @@ telaAlimenta:
         jmp .espera
 
 telaPassea:
+
     call limparTela
     call modoVideoCor
     call drawTamagotchi
@@ -636,10 +681,23 @@ telaPassea:
     .espera:
         mov ah, 02h ; escolhe a funcao de ler o tempo do sistema
         int 1aH     ; interrupcao que lida com o tempo do sistema
-        cmp dh, 2
-            je telaJogo
-        jmp .espera
 
+        mov ah, [timerFake]     ; pra nao repetir a mesma coisa enquanto nao mudar de segundo
+        cmp dh, ah
+        je .ignora
+
+        mov [timerFake], dh
+        call erasePassea    ; esse erase ele só pinta um quadrado preto do tamanho do desenho anterior pra nao ter q printar a tela inteira dnv
+        mov ax, [arvoreX]
+        sub ax, 45          ;vou mover pra esquerda, entao diminuo 45 da posicao X da arvore
+        mov [arvoreX], ax
+        call drawPassea
+
+        .ignora:
+            cmp dh, 5
+            je telaJogo
+                
+            jmp .espera
 
 telaDorme:
     call limparTela
@@ -905,13 +963,55 @@ drawAnything:
 
 	.printLinha:
 		lodsb	;vai pegar oq ta na si, que no caso eh o sprite
-		cmp al, 0	; se for 0 eh espaco em branco e nao vamos printar nada
-		je .naoprinta0	;ai eu pulo pra incrementar os contadores e seguir pro prox pixel
+		;cmp al, 0	; se for 0 eh espaco em branco e nao vamos printar nada
+		;je .naoprinta0	;ai eu pulo pra incrementar os contadores e seguir pro prox pixel
         cmp al, 13
         jne .pulaCor
         mov al, [cor] ; cor branca pro pixel
             .pulaCor:
 		    mov [es:di], al	;es+deslocamento = primeiro pixel da tela + quantos pixels eu vou pular pra chegar no lugar q eu quero e al tem a cor que eu vou colocar. esse eh o print
+
+		.naoprinta0:
+			inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
+			inc cx	; incremento o contador de colunas
+			cmp cx, [spriteW]	; imprimiu a primeira linha do desenho?
+			jne .printLinha	; se nao terminou continua imprimindo
+	
+	.proxLinha:
+		xor cx, cx	; zera o contador de colunas
+		sub di, [spriteW]	; subtrai as colunas pra voltar pro começo da linha
+		add di, 320	; vai pra linha abaixo
+		inc bx	; incrementa quantas linhas printou
+		cmp bx, [spriteH]	; terminei de printar as linhas?
+		jne .printLinha	; se nao terminou continua imprimindo
+
+	.end:
+		call clearRegistradores	;limpo tudo pq melhor prevenir
+		ret
+
+eraseAnything:
+	call clearRegistradores	; zero tudo porque vou usar muita coisa
+
+	push 0a000h
+    pop es	; isso aqui eh pra deixar o [es] no inicio da tela e eu vou usar esse es pra printar os pixels
+	
+	mov ax, [drawY]
+	mov bx, 320	; 320 eh a quantidade de pixels na linha
+	mul bx	; vai fazer ax * bx, resultado guardado em [dx][ax]
+	add ax, [drawX] ; agr adiciona quantos pixels da posicao x
+
+	mov di, ax	;o ax vai ser a posiçao do primeiro pixel que a gente vai printar, entao vamo salvar em di
+
+	xor cx,cx	;zero tudo menos o dx, porque vou usar o di
+    xor ax,ax
+    xor bx,bx
+
+	mov si, [currentSprite]	;si guarda/aponta o sprite que vamo desenhar
+
+	.printLinha:
+		lodsb
+        mov al, 0
+		mov [es:di], al	;es+deslocamento = primeiro pixel da tela + quantos pixels eu vou pular pra chegar no lugar q eu quero e al tem a cor que eu vou colocar. esse eh o print
 
 		.naoprinta0:
 			inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
@@ -945,12 +1045,23 @@ drawTamagotchi:
 	mov ax, [tamagotchiH]
 	mov [spriteH], ax
 
-	mov ax, tamagotchi
-	mov [currentSprite], ax
+    mov ah, [qualTamagotchi]
+    not ah
+    mov [qualTamagotchi], ah
 
-	call drawAnything
+    cmp ah, 0
+    je .troca
+    
+    mov ax, tamagotchi
+    mov [currentSprite], ax
+    call drawAnything
+    ret
 
-	ret
+    .troca:
+        mov ax, tamagotchi2
+        mov [currentSprite], ax
+        call drawAnything
+        ret
 
 drawTamagotchiMorto:
 	xor ax, ax	; zero o ax que eu vou usar pra nao dar merda
@@ -1335,6 +1446,25 @@ drawDormindo:
 
 	ret
 
+erasePassea:
+    xor ax, ax
+    mov ax, [arvoreX]
+	mov [drawX], ax
+	mov ax, [arvoreY]
+	mov [drawY], ax
+
+	mov ax, [arvoreW]
+	mov [spriteW], ax
+
+	mov ax, [arvoreH]
+	mov [spriteH], ax
+
+	mov ax, arvore
+	mov [currentSprite], ax
+
+	call eraseAnything
+
+	ret
 
 drawPassea:
     xor ax, ax
@@ -1342,7 +1472,6 @@ drawPassea:
 	mov [drawX], ax
 	mov ax, [arvoreY]
 	mov [drawY], ax
-
 
 	mov ax, [arvoreW]
 	mov [spriteW], ax
