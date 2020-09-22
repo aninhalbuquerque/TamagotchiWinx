@@ -11,10 +11,10 @@ data:
     ;tela Instruções
     instrucoes2 db 'INSTRUCOES', 0
     texto1 db 'Existem 3 tipos de vida, que decrescem acada 3 segundos', 0
-    texto2 db '1. Alimentar aumenta 1 coracao', 0
-    texto3 db '2. Passear aumenta 1 carinha feliz', 0
-    texto4 db '3. Dar banho aumenta 1 gota', 0
-    texto5 db '4. Dormir aumenta 1 coracao e 1 carinha feliz', 0
+    texto2 db '1. Alimentar aumenta 1 coracao e        diminui 1 gota', 0
+    texto3 db '2. Passear aumenta 1 carinha feliz e    diminui 1 gota', 0
+    texto4 db '3. Dar banho aumenta 1 gota e diminui 1 carinha feliz', 0
+    texto5 db '4. Dormir aumenta 1 carinha feliz e     diminui 1 coracao', 0
     texto6 db 'Se alguma vida acabar ou extrapolar, o  tamagotchi morre', 0
 
     alimenta db 'Q - alimentar', 0
@@ -510,7 +510,7 @@ loopJogo:
     call mexeBicho
 
     cmp dh, 3 ;dh é onde fica os segundos
-    jge .diminuirVida
+        jge .diminuirVidas
     
     call verSeTemEntrada
     jz loopJogo ;se for 0 (ou seja, não tem entrada), volta pro loop
@@ -527,37 +527,26 @@ loopJogo:
     
     .alimenta:
         call .aumentarVida
+        call .diminuirVida2
         jmp telaAlimenta
     .passea:
         call .aumentarVida1
+        call .diminuirVida2
         mov ax, 260         ;reseta a posicao da arvore pra printar certo dps
         mov [arvoreX], ax
         jmp telaPassea
     .dorme:
-        call .aumentarVida
         call .aumentarVida1
+        call .diminuirVida
         jmp telaDorme
     .banho:
         call .aumentarVida2
+        call .diminuirVida1
         jmp telaBanho
-    .diminuirVida:
-        xor ax, ax
-        mov [timerFake], ah
-        mov ah, [qtVidas]
-        sub ah, 1
-        cmp ah, 0
-            je telaGameOver
-        mov [qtVidas], ah
-        mov ah, [qtHappy]
-        sub ah, 1
-        cmp ah, 0
-            je telaGameOver
-        mov [qtHappy], ah
-        mov ah, [qtGotas]
-        sub ah, 1
-        cmp ah, 0
-            je telaGameOver
-        mov [qtGotas], ah
+    .diminuirVidas:
+        call .diminuirVida
+        call .diminuirVida1
+        call .diminuirVida2
         jmp telaJogo
     .aumentarVida:
         mov ah, [qtVidas]
@@ -577,6 +566,27 @@ loopJogo:
         mov ah, [qtGotas]
         add ah, 1
         cmp ah, 6
+            je telaGameOver
+        mov [qtGotas], ah
+        ret
+    .diminuirVida:
+        mov ah, [qtVidas]
+        sub ah, 1
+        cmp ah, 0
+            je telaGameOver
+        mov [qtVidas], ah
+        ret
+    .diminuirVida1:
+        mov ah, [qtHappy]
+        sub ah, 1
+        cmp ah, 0
+            je telaGameOver
+        mov [qtHappy], ah
+        ret
+    .diminuirVida2:
+        mov ah, [qtGotas]
+        sub ah, 1
+        cmp ah, 0
             je telaGameOver
         mov [qtGotas], ah
         ret
@@ -824,25 +834,25 @@ telaInstrucoes:
 
     mov si, texto3
     mov dl, 1
-    mov dh, 8
+    mov dh, 9
     call andarEspaco
     call printString
 
     mov si, texto4
     mov dl, 1
-    mov dh, 10
+    mov dh, 12
     call andarEspaco
     call printString
 
     mov si, texto5
     mov dl, 1
-    mov dh, 12
+    mov dh, 15
     call andarEspaco
     call printString
 
     mov si, texto6
     mov dl, 0
-    mov dh, 15
+    mov dh, 19
     call andarEspaco
     call printString
 
