@@ -436,8 +436,10 @@ telaCor:
     je .azul
     cmp al, '2'
     je .rosa
+    cmp al, '3'
+    je .verde
     ;.verde:
-    mov ah, 2
+    mov ah, 8
     mov [cor], ah
     ret
     .azul:
@@ -446,6 +448,10 @@ telaCor:
         ret
     .rosa:
         mov ah, 13
+        mov [cor], ah
+        ret
+    .verde:
+        mov ah, 2
         mov [cor], ah
         ret
 telaJogo:
