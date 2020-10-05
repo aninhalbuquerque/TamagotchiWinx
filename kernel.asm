@@ -650,6 +650,8 @@ telaAlimenta:
         jmp .espera
 
 telaPassea:
+    mov ah, 0               ;resetar o timer
+    mov [timerFake], ah
 
     call limparTela
     call modoVideoCor
@@ -979,19 +981,16 @@ drawAnything:
 
 	.printLinha:
 		lodsb	;vai pegar oq ta na si, que no caso eh o sprite
-		;cmp al, 0	; se for 0 eh espaco em branco e nao vamos printar nada
-		;je .naoprinta0	;ai eu pulo pra incrementar os contadores e seguir pro prox pixel
         cmp al, 13
         jne .pulaCor
         mov al, [cor] ; cor branca pro pixel
             .pulaCor:
 		    mov [es:di], al	;es+deslocamento = primeiro pixel da tela + quantos pixels eu vou pular pra chegar no lugar q eu quero e al tem a cor que eu vou colocar. esse eh o print
 
-		.naoprinta0:
-			inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
-			inc cx	; incremento o contador de colunas
-			cmp cx, [spriteW]	; imprimiu a primeira linha do desenho?
-			jne .printLinha	; se nao terminou continua imprimindo
+		inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
+		inc cx	; incremento o contador de colunas
+		cmp cx, [spriteW]	; imprimiu a primeira linha do desenho?
+		jne .printLinha	; se nao terminou continua imprimindo
 	
 	.proxLinha:
 		xor cx, cx	; zera o contador de colunas
@@ -1029,11 +1028,10 @@ eraseAnything:
         mov al, 0
 		mov [es:di], al	;es+deslocamento = primeiro pixel da tela + quantos pixels eu vou pular pra chegar no lugar q eu quero e al tem a cor que eu vou colocar. esse eh o print
 
-		.naoprinta0:
-			inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
-			inc cx	; incremento o contador de colunas
-			cmp cx, [spriteW]	; imprimiu a primeira linha do desenho?
-			jne .printLinha	; se nao terminou continua imprimindo
+		inc di	; incremendo o di pra ser a proxima posicao do pixel que vai ser printado
+		inc cx	; incremento o contador de colunas
+		cmp cx, [spriteW]	; imprimiu a primeira linha do desenho?
+		jne .printLinha	; se nao terminou continua imprimindo
 	
 	.proxLinha:
 		xor cx, cx	; zera o contador de colunas
