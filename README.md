@@ -11,7 +11,9 @@ Joguinho feito para o projeto Bootloader da disciplina Infraestrutura de Softwar
 [VICTORIA LUISI SOUZA CARNEIRO](https://github.com/vlsc)  
 
 ## Sobre o jogo
-	Crie o seu tamagotchi, escolha seu nome e sua cor e comece a dedicar todo o seu tempo livre para alimentar, passear e dar banho no seu novo filho. CUIDADO: se você for negligente ele vai acabar morrendo X_X
+	Crie o seu tamagotchi, escolha seu nome e sua cor
+	e comece a dedicar todo o seu tempo livre para alimentar, passear e dar banho no seu novo filho.
+	CUIDADO: se você for negligente ele vai acabar morrendo X_X
 	
 ## Screenshots
 <p align="center">
